@@ -19,12 +19,17 @@ function App() {
         {id: v1(), title: 'useRef', isDone: true},
         {id: v1(), title: 'switch', isDone: true},
         {id: v1(), title: 'В одну строчку', isDone: true},
+        {id: v1(), title: 'Условное присвоение классов', isDone: false},
         {id: v1(), title: 'bubbling', isDone: false},
         {id: v1(), title: 'factorial', isDone: false},
     ]);
 
+    const changeTaskStatus = (taskId: string, isDone: boolean) => {
+        setTasks(tasks.map((task) => task.id === taskId ? {...task, isDone: isDone} : task))
+    }
+
     const removeTask = (taskId: string) => {
-        setTasks(tasks.filter((el) => el.id !== taskId))
+        setTasks(tasks.filter((task) => task.id !== taskId))
     }
 
     const addTask = (newTaskTitle: string) => {
@@ -34,7 +39,7 @@ function App() {
 
     let [filter, setFilter] = useState<FilterValuesType>('all')
     const filterTasks = (filterValue: FilterValuesType) => setFilter(filterValue)
-    // вариант в одну строчку
+    // вариант в одну строчку (нравится больше)
     let filteredTasks = tasks.filter(el => filter === 'active' ? !el.isDone : filter === 'completed' ? el.isDone : 'all')
 
     // // вариант со switch
@@ -57,9 +62,11 @@ function App() {
             <Todolist
                 todolistTitle={todolistTitle}
                 tasks={filteredTasks}
+                filter={filter}
                 removeTask={removeTask}
                 filterTasks={filterTasks}
                 addTask={addTask}
+                changeTaskStatus={changeTaskStatus}
             />
         </div>
     );
